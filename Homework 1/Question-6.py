@@ -5,16 +5,29 @@ import sympy as sp
 
 x = sp.symbols('x')
 def function(x):
-    return x**3 - 6*x**2 + 11*x -6.1
+    return x**3 - 6*x**2 + 11*x - 6.1
 
 
-def newton_method(f, starting_point, num_iter):
-    fxn = x**3 - 6*x**2 + 11*x - 6.1
+def newton_method(f, starting_point):
+    # Get symbolic derivative of f
+    x_r = starting_point
+    deriv_f = sp.diff(function(x))
 
-    # Get derivative of f
-    deriv_f = sp.Derivative(fxn, x).doit()
-    print(type(deriv_f))
+    # Initialize starting values
+    count = 0
+    error_calc = 100
+    prev_value = 0
 
+    # Run through Newton-Raphson method until error is below 10^-6
+    while error_calc > 10**-6:
+        prev_value = x_r
+        x_r = x_r - (f(x_r)) / (deriv_f.subs({x: x_r}))
+        count += 1
+        error_calc = abs((x_r - prev_value) / x_r)
+
+    # Print information with final approximation
+    print(f"Final Approximation: {x_r} Initial Guess: {starting_point} "
+          f"Number of Iterations: {count} Final Error Calculation: {error_calc * 100}%")
 
 
 # a. Graph the function over [0,5]
@@ -26,5 +39,7 @@ plt.axhline(0, color='black')
 plt.axvline(0, color='black')
 plt.show()
 
-# c. Find real root with Newton Method
-newton_method(function, 3.5, 3)
+# d. Find real roots with guesses with Newton Method
+newton_method(function, 3.5)
+newton_method(function, 2)
+newton_method(function, 1)
