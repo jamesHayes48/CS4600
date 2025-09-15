@@ -5,12 +5,12 @@ def function(x):
     return -12 - 21*x + 18*x**2 - 2.75*x**3
 
 
-def bisection_method(f, num_iter, lower_limit, upper_limit):
+def bisection_method(f, lower_limit, upper_limit):
     interval = [lower_limit, upper_limit]
     midpoint = 0
     old_midpoint = 0
 
-    for n in range(num_iter + 1):
+    for n in range(20):
         midpoint = (interval[0] + interval[1]) / 2
         x_l, x_u = interval[0], interval[1]
         func_midpoint = f(midpoint)
@@ -28,11 +28,11 @@ def bisection_method(f, num_iter, lower_limit, upper_limit):
               f"new interval: {interval} {'' if n==0 else f"Error = {error_midpoint}%"}")
         old_midpoint = midpoint
 
-def false_position(f, num_iter, lower_limit, upper_limit):
+def false_position(f, lower_limit, upper_limit):
     interval = [lower_limit, upper_limit]
     old_midpoint = 0
 
-    for n in range(num_iter):
+    for n in range(20):
         f_l = f(interval[0])
         f_u = f(interval[1])
         x_r = ((f_l*interval[1] - f_u*interval[0]) /
@@ -60,9 +60,7 @@ plt.show()
 
 # Run the bisection and false-position method 20 times
 print("Bisection Method: ")
-bisection_method(function, num_iter=20, lower_limit=-1, upper_limit=0)
+bisection_method(function, lower_limit=-1, upper_limit=0)
 
 print("\nFalse-Position Method: ")
-false_position(function, num_iter=20, lower_limit=-1, upper_limit=0)
-
-false_position(function_3, num_iter=3, lower_limit=0.6, upper_limit=0.7)
+false_position(function, lower_limit=-1, upper_limit=0)

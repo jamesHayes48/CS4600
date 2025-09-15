@@ -13,7 +13,7 @@ def bisection_method(f, num_iter, lower_limit, upper_limit):
     midpoint = 0
     old_midpoint = 0
 
-    for n in range(num_iter + 1):
+    for n in range(num_iter):
         midpoint = (interval[0] + interval[1]) / 2
         x_l, x_u = interval[0], interval[1]
         func_midpoint = f(midpoint)
@@ -27,7 +27,7 @@ def bisection_method(f, num_iter, lower_limit, upper_limit):
         elif decide > 0:
             interval[0] = midpoint
 
-        print(f"Iteration {n}: x_{n} = {midpoint} f(x_r) = {func_midpoint} f(x_l) * f(x_{n}) = {decide} "
+        print(f"Iteration {n + 1}: x_{n+1} = {midpoint} f(x_r) = {func_midpoint} f(x_l) * f(x_{n}) = {decide} "
               f"new interval: {interval} {'' if n==0 else f"Error = {error_midpoint}%"}")
         old_midpoint = midpoint
 

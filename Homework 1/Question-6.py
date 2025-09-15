@@ -2,8 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sympy as sp
 
-
+# Define symbols for sympy
 x = sp.symbols('x')
+
+# Function to use newton-method with
 def function(x):
     return x**3 - 6*x**2 + 11*x - 6.1
 
