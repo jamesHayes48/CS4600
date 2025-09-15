@@ -1,13 +1,17 @@
 '''
-Question 2b: Perform bisection method in 17 iterations
+Question 2b: Perform bisection method with 17 iterations on function x**2 - 2
 '''
+
 
 import math
 
+# function to estimate root
 def function(x):
     return x**2 - 2
 
 
+# Bisection method that takes function f, number of iterations to run and
+# lower limit, upper limit to bracket root.
 def bisection_method(f, num_iter, lower_limit, upper_limit):
     interval = [lower_limit, upper_limit]
     midpoint = 0
@@ -31,4 +35,5 @@ def bisection_method(f, num_iter, lower_limit, upper_limit):
               f"new interval: {interval} {'' if n==0 else f"Error = {error_midpoint}%"}")
         old_midpoint = midpoint
 
+# 2b. Run bisection method 17 times
 bisection_method(function, num_iter=17, lower_limit=1, upper_limit=2)

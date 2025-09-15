@@ -1,8 +1,15 @@
+'''
+Question 6a: Visually estimate location of real root of function x**3 - 6*x**2 + 11*x - 6.1
+
+Question 6d: Use Newton-Raphson method to find all real roots of function x**3 - 6*x**2 + 11*x - 6.1
+'''
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 import sympy as sp
 
-# Define symbols for sympy
+# Define symbols for sympy derivative
 x = sp.symbols('x')
 
 # Function to use newton-method with
@@ -10,6 +17,8 @@ def function(x):
     return x**3 - 6*x**2 + 11*x - 6.1
 
 
+# Newton method that takes function f and a starting point
+# Stops until error is below 10^(-6)
 def newton_method(f, starting_point):
     # Get symbolic derivative of f
     x_r = starting_point
@@ -20,7 +29,7 @@ def newton_method(f, starting_point):
     error_calc = 100
     prev_value = 0
 
-    # Run through Newton-Raphson method until error is below 10^-6
+    # Run through Newton-Raphson method until error is below 10^(-6)
     while error_calc > 10**-6:
         prev_value = x_r
         x_r = x_r - (f(x_r)) / (deriv_f.subs({x: x_r}))
