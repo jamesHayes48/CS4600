@@ -1,5 +1,5 @@
 '''
-Question 6c - Implement steepest descent method in Python.
+Question 4c - Implement steepest descent method in Python.
 Print its contour and path of optimization
 '''
 

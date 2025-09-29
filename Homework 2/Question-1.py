@@ -1,9 +1,15 @@
+'''
+Question 1e - Graph the surface plot of function x**3 + y**3 - 3*x*y
+'''
+
 from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def function(x,y):
     return x**3 + y**3 - 3*x*y
+
 
 # e. Graphical Estimation
 # Graph 3D surface plot of f(x,y)
