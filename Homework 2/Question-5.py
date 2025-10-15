@@ -20,5 +20,5 @@ x1_bnds = (0, None)
 x2_bnds = (0, None)
 
 # Find the optimal values for x_1 and x_2 using simplex method
-res = linprog(object_func, ineq_equation, rhs, bounds=[x1_bnds, x2_bnds])
-print(res)
+res = linprog(object_func, A_ub=ineq_equation, b_ub=rhs, bounds=[x1_bnds, x2_bnds])
+print(res.x, res.fun)
