@@ -55,7 +55,7 @@ def gausspivot(A, b):
 # Constants set here
 # Given Q0
 Q0 = 14 # liters/min
-Q0 = Q0 / 6000 # Convert to m^3 / s
+Q0 = Q0 / 60000 # Convert to m^3 / s
 
 # Calculate first part of KIJ
 constant = (np.pi / (8 * 24))
@@ -63,37 +63,37 @@ constant = (np.pi / (8 * 24))
 # Given Pressure at node 7
 P7 = 200000 # Pa
 
-# Set coefficents
+# Set coefficients
 # Pipe 0 - 1
-R01 = 10.4 # mm
+R01 = 20.8 / 2 # mm
 R01 /= 1000 # convert to m
 L01 = 40 # cm
-L01 /= 100 # convert to cm
+L01 /= 100 # convert to m
 K01 = constant * ((R01 ** 4)/L01)
 
 # Pipe 1 - 2
-R12 = 7.85 # mm
+R12 = 15.7 / 2 # mm
 R12 /= 1000 # convert to m
 L12 = 60 # cm
-L12 /= 100 # convert to cm
+L12 /= 100 # convert to m
 K12 = constant * ((R12 ** 4)/L12)
 
 # Pipe 1 - 3
-R13 = 7.85 # mm
+R13 = 15.7 / 2 # mm
 R13 /= 1000 # convert to m
-L13 = 60 # cm
-L13 /= 100 # convert to cm
+L13 = 50 # cm
+L13 /= 100 # convert to m
 K13 = constant * ((R13 ** 4)/L13)
 
 # Pipe 4 - 6
-R46 = 7.85 # mm
+R46 = 15.7 / 2 # mm
 R46 /= 1000 # convert to m
 L46 = 150 # cm
 L46 /= 100 # convert to m
 K46 = constant * ((R46 ** 4)/L46)
 
 # Pipe 5 - 6
-R56 = 7.85 # mm
+R56 = 15.7 / 2 # mm
 R56 /= 1000 # convert to m
 L56 = 100 # cm
 L56 /= 100 # convert to m
@@ -102,7 +102,7 @@ K56 = constant * ((R56 ** 4)/L56)
 # Pipe 6 - 7
 R67 = 26.7 / 2 # mm
 R67 /= 1000 # convert to m
-L67 = 100 # cm
+L67 = 75 # cm
 L67 /= 100 # convert to m
 K67 = constant * ((R67 ** 4)/L67)
 
@@ -110,59 +110,45 @@ K67 = constant * ((R67 ** 4)/L67)
 CV24 = 2.00e-09
 CV35 = 2.75e-09
 
-
-# Store matrix in pattern:
-
 # Store the coefficient matrix A
-coeff_matrix_A = np.array([[0, 0, *((0.0104**4 / 0.40)), -(np.pi / (8 * 24))*((0.0104**4 / 0.40)), 0, 0, 0, 0, 0],
-                         [0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 0.50)), -(np.pi / (8 * 24))*((0.00785**4 / 0.50)), 0, 0, 0, 0],
-                         [0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 0.50)), 0 , -(np.pi / (8 * 24))*((0.00785**4 / 0.50)), 0 , 0, 0],
-                         [0, 0, 0, 0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 1.50)), 0 , -(np.pi / (8 * 24))*((0.00785**4 / 1.50))],
-                         [0, 0, 0, 0, 0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 1.00)), -(np.pi / (8 * 24))*((0.00785**4 / 1.00))],
-                         [0, 0, 0, 0, 0, 0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 0.75))],
-                         [0, 0, 0, 0, 2 * (10**(-9)), 0, -2 * (10**(-9)), 0 , 0],
-                         [0, 0, 0, 0, 0, 2.75 * (10 ** -9), 0, -2.75 * (10 ** -9), 0],
-                         [1, 1, 0, 0, 0, 0, 0, 0, 0]])
+coeff_matrix_A = np.zeros((9, 9))
+
+# Assign Pipe Coefficients
+coeff_matrix_A[0, 2], coeff_matrix_A[0, 3] = K01, -K01
+coeff_matrix_A[1, 0], coeff_matrix_A[1, 3], coeff_matrix_A[1, 4] = 1, -K12, K12
+coeff_matrix_A[2, 1], coeff_matrix_A[2, 3], coeff_matrix_A[2, 5] = 1, -K13, K13
+coeff_matrix_A[3, 0], coeff_matrix_A[3, 6], coeff_matrix_A[3, 8] = 1, -K46, K46
+coeff_matrix_A[4, 1], coeff_matrix_A[4, 7], coeff_matrix_A[4, 8] = 1, -K56, K56
+coeff_matrix_A[5, 8] = K67
+
+# Assign Valve coefficients
+coeff_matrix_A[6, 4], coeff_matrix_A[6, 6] = CV24, -CV24
+coeff_matrix_A[7, 5], coeff_matrix_A[7, 7] = CV35, -CV35
+
+# Assign Flow equation coefficients
+coeff_matrix_A[8,0], coeff_matrix_A[8,1] = 1, 1
 
 # Store constant vector b
-constant_vector_b = np.array([[2.33 * (10 ** -3)],
+constant_vector_b = np.array([[Q0],
                      [0],
                      [0],
                      [0],
                      [0],
-                     [2.33 * (10 ** -3) + (np.pi / (8 * 24))*((0.00785**4 / 0.75)) * (200000)],
+                     [Q0 + K67 * P7],
                      [0],
                      [0],
-                     [2.33 * (10 ** -3)]])
+                     [Q0]])
 
-'''
-A = np.array([[ 0.00000000e+00,  0.00000000e+00,  4.78544148e-10, -4.78544148e-10,
-   0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-   0.00000000e+00],
- [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  1.24267416e-10,
-  -1.24267416e-10,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-   0.00000000e+00],
- [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  1.24267416e-10,
-   0.00000000e+00, -1.24267416e-10,  0.00000000e+00,  0.00000000e+00,
-   0.00000000e+00],
- [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-   0.00000000e+00,  0.00000000e+00,  4.14224719e-11,  0.00000000e+00,
-  -4.14224719e-11],
- [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-   0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  6.21337078e-11,
-  -6.21337078e-11],
- [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00, 0.00000000e+00,
-   0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-   8.28449438e-11],
- [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-   2.00000000e-09,  0.00000000e+00, -2.00000000e-09,  0.00000000e+00,
-   0.00000000e+00],
- [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-   0.00000000e+00,  2.75000000e-09,  0.00000000e+00, -2.75000000e-09,
-   0.00000000e+00],
- [ 1.00000000e+00,  1.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-   0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-   0.00000000e+00]])
-'''
-pprint(coeff_matrix_A)
-print(gausspivot(coeff_matrix_A, constant_vector_b))
+answer = gausspivot(coeff_matrix_A, constant_vector_b)
+print("Flows rates in m^3/s and liters/min")
+print(f"Q1: {answer[0, 0]} m^3 / s, {answer[0, 0] * 60000} liters/min")
+print(f"Q2: {answer[1, 0]} m^3 / s, {answer[1, 0] * 60000} liters/min")
+
+print("Pressures in Pa and Psi")
+print(f"P0: {answer[2, 0]} Pa, {answer[2, 0] / 6895} psi")
+print(f"P1: {answer[3, 0]} Pa, {answer[3, 0] / 6895} psi")
+print(f"P2: {answer[4, 0]} Pa, {answer[4, 0] / 6895} psi")
+print(f"P3: {answer[5, 0]} Pa, {answer[5, 0] / 6895} psi")
+print(f"P4: {answer[6, 0]} Pa, {answer[6, 0] / 6895} psi")
+print(f"P5: {answer[7, 0]} Pa, {answer[7, 0] / 6895} psi")
+print(f"P6: {answer[8, 0]} Pa, {answer[8, 0] / 6895} psi")
