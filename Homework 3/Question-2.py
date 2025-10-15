@@ -42,7 +42,7 @@ def gausspivot(A, b):
         for i in range(k + 1, n):
             factor = Aug[i, k] / Aug[k, k]
             Aug[i, k:nb] = Aug[i, k:nb]-factor * Aug[k, k:nb]
-            # back substitution
+    # back substitution
     x = np.zeros([n, 1])  # create empty x array
     x = np.matrix(x)  # convert to matrix type
     x[n-1]=Aug[n-1, nb-1] / Aug[n-1, n-1]
@@ -52,14 +52,25 @@ def gausspivot(A, b):
 
 
 # Store the coefficient matrix A
-coeff_matrix_A = np.array([[],
-                         [],
-                         [],
-                         [],
-                         [],
-                         [],
-                         [],
-                         [],
+coeff_matrix_A = np.array([[0, 0, (np.pi / (8 * 24))*((0.0104**4 / 0.40)), -(np.pi / (8 * 24))*((0.0104**4 / 0.40)), 0, 0, 0, 0, 0],
+                         [0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 0.50)), -(np.pi / (8 * 24))*((0.00785**4 / 0.50)), 0, 0, 0, 0],
+                         [0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 0.50)), 0 , -(np.pi / (8 * 24))*((0.00785**4 / 0.50)), 0 , 0, 0],
+                         [0, 0, 0, 0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 1.50)), 0 , -(np.pi / (8 * 24))*((0.00785**4 / 1.50))],
+                         [0, 0, 0, 0, 0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 1.00)), -(np.pi / (8 * 24))*((0.00785**4 / 1.00))],
+                         [0, 0, 0, 0, 0, 0, 0, 0, (np.pi / (8 * 24))*((0.00785**4 / 0.75))],
+                         [0, 0, 0, 0, 2 * (10**(-9)), 0 , -2 * (10**(-9)), 0 , 0],
+                         [0, 0, 0, 0, 0, 2.75 * (10 ** -9), 0, -2.75 * (10 ** -9), 0],
                          [1, 1, 0, 0, 0, 0, 0, 0, 0]])
+
 # Store constant vector b
-constant_vector_b = []
+constant_vector_b = np.array([[2.33 * (10 ** -3)],
+                     [0],
+                     [0],
+                     [0],
+                     [0],
+                     [2.33 * (10 ** -3) + (np.pi / (8 * 24))*((0.00785**4 / 0.75)) * (200000)],
+                     [0],
+                     [0],
+                     [2.33 * (10 ** -3)]])
+
+print(gausspivot(coeff_matrix_A, constant_vector_b))
