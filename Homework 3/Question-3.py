@@ -50,4 +50,3 @@ for i in range(n):
     A_inv[:, i] = x_i
 
 print(f"Inverse of Coefficient matrix = \n {A_inv}")
-
