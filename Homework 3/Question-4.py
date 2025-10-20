@@ -17,8 +17,19 @@ Q23 = 50 # m^3 / hr
 Q34 = 90 # m^3 / hr
 Load = 5000 # mg / hr
 
-A = np.array([[Q12 + Q13, 0 , Q13, 0],
-            [-(Q12), Q23, Q23, 0],
+A = np.array([
+            [- (-Q12 - Q13), 0, Q13, 0],
+            [-(Q12), Q23, -Q23, 0],
             [-Q13, -Q23, -(Q23 - Q13 + Q34), -Q34],
-            []
+            [0, 0, 0, Q34]
+            ])
+
+b = np.array([[Qa * ca],
+              [Qb * cb],
+              [0],
+              [Load]
               ])
+
+A_inv = np.linalg.inv(A)
+
+print(f"Answer: {np.dot(A_inv, b)}")
