@@ -16,12 +16,15 @@ E23 = 50 # m^3 / hr
 Q3OUT = 50 # m^3 / hr
 E34 = 90 # m^3 / hr
 Load = 5000 # mg / hr
+Q13 = Qa - Q12
+Q23 = Qb + Q12
+Q34 = Q23 + Q13 - Q3OUT
 
 A = np.array([
-    [(Q12 + E13 + Qa), 0, -E13, 0],
-    [-Q12, (Qb + Q12 + E23), -E23, 0],
-    [(Qa + E13), (Qb + Q12 + E23), -(Q3OUT + Qb + Q12 + Qa + E13 + E23 + E34), E34],
-    [0, 0, -(Qb + Q12 + Qa + E34), (Qb + Q12 + Qa + E34)]
+    [Q13 + E13 + Q12, 0, -E13, 0],
+    [-Q12, Q13 + E23, -E23, 0],
+    [Q13, Q23, -(Q3OUT + Q34 + E13 + E34), E34],
+    [0, 0, -Q34 - E34, E34 + Q34]
 ])
 
 b = np.array([[Qa * ca],
@@ -31,8 +34,8 @@ b = np.array([[Qa * ca],
               ])
 
 A_inv = np.linalg.inv(A)
-
 c = np.dot(A_inv, b)
+
 print(f"Concentrations in mg/m^3: \n {c}")
 
 target_c2 = 20
