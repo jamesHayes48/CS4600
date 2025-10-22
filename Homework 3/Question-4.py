@@ -32,4 +32,11 @@ b = np.array([[Qa * ca],
 
 A_inv = np.linalg.inv(A)
 
-print(f"Answer: \n {np.dot(A_inv, b)}")
+c = np.dot(A_inv, b)
+print(f"Concentrations in mg/m^3: \n {c}")
+
+target_c2 = 20
+fourth_col = A_inv[:, 3].reshape(-1, 1)
+W_new = (target_c2 - c[1,0]) / fourth_col[1,0]
+
+print(f"To reach c2 = 20 mg / m^3, Load from room 4 must be: {W_new}")

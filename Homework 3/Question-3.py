@@ -50,3 +50,5 @@ for i in range(n):
     A_inv[:, i] = x_i
 
 print(f"Inverse of Coefficient matrix = \n {A_inv}")
+
+print(f"Concentrations of reactors in g/L: \n {np.dot(A_inv, b_constant)}")
