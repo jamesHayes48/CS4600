@@ -3,8 +3,14 @@ Question-4
 '''
 
 import numpy as np
+from fontTools.merge.util import first
 from unicodedata import normalize
 
+
+def normalize(x):
+    eigen = abs(x).max()
+    vector = x / x.max()
+    return eigen, vector
 
 def small_eigenvalue_power(A, init_input, relative_limit):
     A_inv = np.linalg.inv(A)
@@ -15,9 +21,15 @@ def small_eigenvalue_power(A, init_input, relative_limit):
 
     while relative_error > relative_limit:
         prev_eigen = eigen_val
+
+        # Multiply inverse of A and eigenvector
         A_inv_x = np.dot(A_inv, x)
+
+        # Get Eigenvector
         x = A_inv_x / np.linalg.norm(A_inv_x)
-        eigen_val = np.dot(np.dot(A, x), x) / np.dot(x, x)
+
+        # Get eigenvalue with Rayleigh quotient
+        eigen_val = np.dot(x.T, np.dot(A, x)) / np.dot(x.T, x)
 
         if iter_count != 0:
             relative_error = relative_error = abs((eigen_val - prev_eigen) / eigen_val)
@@ -44,6 +56,7 @@ symm_matrix = np.array([
                         [2, 4, 12]
                        ])
 first_input = np.array([1, 1, 1])
+print(first_input.shape)
 error_limit = 10 ** -7
 
 small_eigenvalue_power(symm_matrix, first_input, error_limit)
