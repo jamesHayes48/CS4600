@@ -59,9 +59,9 @@ def gauss_seidel(rel_error):
             error_array[2] = error_calc(assume[2], prev_answer[2])
 
         print(f"Iteration {iter_count}: \n"
-              f"x1 = {assume[0]} error_x1 = {error_array[0]} ; "
-              f"x2 = {assume[1]} error_x2 = {error_array[1]} ; "
-              f"x3 = {assume[2]} error_x3 = {error_array[2]}"
+              f"x1 = {assume[0]} error_x1 = {error_array[0]}% ; "
+              f"x2 = {assume[1]} error_x2 = {error_array[1]}% ; "
+              f"x3 = {assume[2]} error_x3 = {error_array[2]}%"
               )
 
         iter_count += 1

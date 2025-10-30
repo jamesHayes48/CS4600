@@ -1,16 +1,12 @@
 '''
-Question-4
+Question 4a - Find Eigenvalues with characteristic polynomial
+Question 4c - Use Power method to find smallest eigenvalue
 '''
 
 import numpy as np
 from fontTools.merge.util import first
 from unicodedata import normalize
 
-
-def normalize(x):
-    eigen = abs(x).max()
-    vector = x / x.max()
-    return eigen, vector
 
 def small_eigenvalue_power(A, init_input, relative_limit):
     A_inv = np.linalg.inv(A)
