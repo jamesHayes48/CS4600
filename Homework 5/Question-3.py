@@ -22,8 +22,24 @@ coeff_matrix = np.matrix([
                           [sum_x_cube, sum_x_four]
                          ])
 
-sum_matrix = np.matrix([
+sum_x_y_matrix = np.matrix([
                         [sum_x_y],
                         [sum_x_square_y]
                     ])
 
+b_matrix = np.linalg.solve(coeff_matrix, sum_x_y_matrix)
+
+b1 = np.asarray(b_matrix[0][0]).item()
+b2 = np.asarray(b_matrix[1][0]).item()
+
+x_line = np.linspace(min(x_vals), max(x_vals))
+y_line = (b1 * x_line) + (b2 * x_line ** 2)
+
+plt.figure()
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Derived Least-Squares Fit of Model of Question 3')
+plt.scatter(x_vals, y_vals, color='red', label='Sample data')
+plt.plot(x_line, y_line, color='teal', label='Line of Best Fit')
+plt.legend()
+plt.show()
